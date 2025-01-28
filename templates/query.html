@@ -1,0 +1,106 @@
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .response-container, .chat-history-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .chat-history-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        textarea {
+            width: 100%;
+        }
+        .chat-bubble {
+            margin-bottom: 10px;
+        }
+        .user-message {
+            color: #007bff;
+        }
+        .bot-message {
+            color: #333;
+        }
+        pre {
+            white-space: pre-wrap; /* ensures that long text wraps nicely */
+        }
+    </style>
+</head>
+<body>
+    <h1>Query Documents</h1>
+    <form action="{{ url_for('query_page') }}" method="post">
+        <label for="department">Select Department:</label>
+        <select name="department" id="department" onchange="updateFields()">
+            <option value="human_resources">Human Resources</option>
+            <option value="legal">Legal</option>
+            <option value="finance">Finance</option>
+            <option value="operations">Operations</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="insurance">Insurance</option>
+            <option value="learning_and_development">Learning and Development</option>
+            <option value="others">Others</option>
+        </select>
+        
+        <label for="query_text">Enter your query:</label>
+        <textarea name="query_text" id="query_text" rows="4" cols="50" required>{{ query_text }}</textarea>
+        
+        <button type="submit">Submit Query</button>
+    </form>
+
+    <!-- Display the Response -->
+    {% if response_text %}
+    <div class="response-container">
+        <p><strong>Response:</strong></p>
+        <pre>{{ response_text }}</pre> <!-- Preserving formatting in response -->
+    </div>
+    {% endif %}
+
+    <!-- Chat History Section -->
+    <div class="chat-history-container">
+        <h2>Chat History</h2>
+        <ul>
+            {% for entry in chat_history %}
+                <li class="chat-bubble">
+                    {% if entry['role'] == 'user' %}
+                    <p><strong class="user-message">User:</strong></p>
+                    <pre>{{ entry['text'] }}</pre>
+                    {% endif %}
+
+                    {% if entry['role'] == 'bot' %}
+                    <p><strong class="bot-message">Bot:</strong></p>
+                    <pre>{{ entry['text'] }}</pre>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{{ url_for('reset_chat') }}">Reset Chat</a>
+
+</body>
+</html>

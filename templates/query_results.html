@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Results</title>
+</head>
+<body>
+    <h1>Query Results</h1>
+    <p><strong>Query:</strong> {{ query_text }}</p>
+    <p><strong>Response:</strong></p>
+    <div>
+        {{ response_text }}
+    </div>
+    <a href="{{ url_for('query_page') }}">Back to Query Page</a>
+</body>
+</html>
